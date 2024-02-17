@@ -1,0 +1,7 @@
+name = "LAMMPStools"
+uuid = "c7a44dd3-9515-4631-b4ab-9aa55c7db1bc"
+authors = ["Mitchell Irmer <mitchellirmer@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
