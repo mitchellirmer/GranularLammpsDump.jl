@@ -2,7 +2,7 @@
 # // more approachable.  
 module LAMMPStools
 
-export readdump, getNatoms, parsestep, dump2mat, dataloader, makemovie_type1
+export readdump, getNatoms, parsestep, dump2mat, dataloader, makemovie_type1, makemovie_type2
 
 using DelimitedFiles, Plots, Colors
 
@@ -109,7 +109,7 @@ function dataloader(inputfile)
     return dump
 end
 
-# // analyze the initial positions and make groups for color coding
+# // Make an mp4 movie with 5 groups color coded by initial x position
 function makemovie_type1(dump,skips)
     # // Call other libraries to help visualizeext()
     gr(size=(1200,1200)); # // define the output size
@@ -184,6 +184,83 @@ function makemovie_type1(dump,skips)
     mp4(anim, fps=20, loop=0, verbose=false, show_msg=true)
 end
 
+# // Make an mp4 movie with 5 groups color coded by current vy
+function makemovie_type2(dump,skips)
+    # // Call other libraries to help visualizeext()
+    gr(size=(1200,1200)); # // define the output size
+    default(legend = false) # // turn off legend in the movie
+    init = get(dump,0,3);
+    sample = findall(a->a>=-5 && a < -3,init[:,3]);
+    
+    # vizualizating settings
+    grainsize = 25;
+    bordersize = 2;
+    opacity = 0.50;
+    camera_angle = (10,5);
+
+    # // make the plots that form the movie
+    anim = @animate for ts in 0:skips:length(dump) - 1
+        steps = get(dump,ts,3);
+        steps = steps[sample,:];
+        maxvy = maximum(abs.(steps[:,7]));
+        c1 = findall(a->a>=-maxvy && a < -maxvy/2, steps[:,7]);
+        c2 = findall(a->a>=-maxvy/2 && a < -maxvy/10, steps[:,7]);
+        c3 = findall(a->a>=-maxvy/10 && a < maxvy/10, steps[:,7]);
+        c4 = findall(a->a>= maxvy/10 && a < maxvy/2, steps[:,7]);
+        c5 = findall(a->a>= maxvy/2 && a <= maxvy, steps[:,7]);
+        # // add something here about sorting into a color by x position
+        scatter(
+            steps[c1,3],steps[c1,4],steps[c1,5], 
+            xlims = (-5,5),
+            xlabel = "x",
+            ylims = (-5,5),
+            ylabel = "y",
+            zlabel = "z",
+            guidefont=font(24),
+            zlims = (0,14),
+            camera = camera_angle, # // measured in degrees
+            aspect_ratio = :equal,
+            msize = grainsize, 
+            mcolor = "red",
+            malpha = opacity,
+            mscolor = "black",
+            mswidth = bordersize
+            )
+        scatter!(
+            steps[c2,3],steps[c2,4],steps[c2,5], 
+            msize = grainsize, 
+            mcolor = "purple",
+            malpha = opacity,
+            mscolor = "black",
+            mswidth = bordersize
+            )
+        scatter!(
+            steps[c3,3],steps[c3,4],steps[c3,5], 
+            msize = grainsize, 
+            mcolor = "blue",
+            malpha = opacity,
+            mscolor = "black",
+            mswidth = bordersize
+            )
+        scatter!(
+            steps[c4,3],steps[c4,4],steps[c4,5], 
+            msize = grainsize, 
+            mcolor = "green",
+            malpha = opacity,
+            mscolor = "black",
+            mswidth = bordersize
+            )
+        scatter!(
+            steps[c5,3],steps[c5,4],steps[c5,5], 
+            msize = grainsize, 
+            mcolor = "yellow",
+            malpha = opacity,
+            mscolor = "black",
+            mswidth = bordersize
+            )
+    end
+    mp4(anim, fps=20, loop=0, verbose=false, show_msg=true)
+end
 
 end # module LAMMPStools
 
