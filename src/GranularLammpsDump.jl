@@ -27,7 +27,11 @@ end
 
 Converts the contents of the dumpfile to a massive dictionary.
 
-Reads the dumpfile into a matrix, shapes the matrix, and removes text lines.  The number of atoms is extracted and used internally but not returned.  The final dictionary form has timesteps as keys, and matrices sorted by particle ID number as values.  In principle, this works for any dumpfile with at least 6 columns of output, but has been tested with 6 output columns and 9 output columns.   
+Reads the dumpfile into a matrix, shapes the matrix, and removes text lines.  The number of atoms is extracted and used internally but not returned.  The final dictionary form has timesteps as keys, and matrices sorted by particle ID number as values.  In principle, this works for any dumpfile with at least 6 columns of output, but has been tested with 6 output columns and 9 output columns.  
+    
+    > Each timestep looks something like this: 
+    > | 1  |  2    | 3 | 4 | 5 | 6  | 7  | 8  | 9  | 10 | 11 |
+    > | ID | GROUP | x | y | z | vx | vy | vz | ux | uy | uz |
 """
 function readdump(inputfile)
     rawdump = readdlm(inputfile);
@@ -56,15 +60,19 @@ function readdump(inputfile)
         newstep = rawdump[ts*Natoms+1:ts*Natoms+Natoms,:]
         time = ts .* ones(length(newstep[:,1]));
         newstep = [sortslices(newstep, dims=1) time];
-        #newdump = [newdump; newstep] # // turn back on for giant matrix
         nextEntry = Dict(ts=>newstep);
         merge!(stepdict,nextEntry);
     end
-    # writedlm("parseddump.csv",newdump,','); # // turn on to export to Matlab
-    return stepdict #, newdump
+    return stepdict
 end
 
-# // Define a struct that can hold the useful stuff from each step.
+"""
+    mutable struct dumpstep
+        
+Stores a dumpstep in a struct.
+    
+Change this to fit your unique dump file layout.
+"""
 mutable struct dumpstep
     ID::Vector{Any}
     group::Vector{Any}
@@ -76,7 +84,13 @@ mutable struct dumpstep
     vz::Vector{Any}
 end
 
-# // Parse a single step for analysis
+"""
+    parsestep(d,ts)
+    
+Stores critical info from a dump step in a mutable struct.
+    
+Iterate this in a loop to step through a simulation.
+"""
 function parsestep(d,ts)
     # // initialize the struct
     # // each step looks like this:
@@ -96,8 +110,14 @@ function parsestep(d,ts)
     return cs
 end
 
-# // make a giant matrix and optionally export as CSV
-function dump2mat(stepdict, exportflag)
+"""
+    dump2mat(dict,exportflag)
+
+Converts the readdump dictionary to one giant matrix.  Optionally export as .csv file.
+
+Export to .csv is on by default.  This will help you collaborate with Matlab users.
+"""
+function dump2mat(stepdict, exportflag=1)
     mat = Matrix{Float64};
     for it in 0:length(stepdict) - 1
        newstep = get(d,it,3);
@@ -113,7 +133,13 @@ end
 # // Above -- dump handling
 # // Below -- visualizing
 
-# // Load the settings.conf file into a settings dictionary.
+"""
+    settingsloader()
+
+Loads the settings.conf file into a settings dictionary.
+
+Used inside other functions, but not useful as a standalone function.
+"""
 function settingsloader()
    settings = Dict();
    settingsmatrix = readdlm("settings.conf");
@@ -124,12 +150,30 @@ function settingsloader()
    return settings
 end
 
-# // Brings up the settings menu in system program nano.
+"""
+    menu()
+
+Brings up the settings menu in system program nano.
+
+Sneaky dependency: requires nano to be installed prior to use.
+"""
 function menu()
     run(`nano settings.conf`)
 end
 
-# // Create the first settings file for the project.
+"""
+    setdefaults()
+    
+Create the first settings file for the project.
+    
+# Example
+```julia-repl
+julia> cd("/home/JuliaUser/Project")
+julia> setdefaults()  
+Default settings.conf created.  
+Edit this using menu() or your favorite text editor.  
+```
+"""
 function setdefaults()
     defaults = ["grainsize" 25;
                 "bordersize" 2;
@@ -150,6 +194,10 @@ function setdefaults()
     file = open("settings.conf", "w");
     writedlm(file, defaults, ' '); # // delimiter is a space
     close(file);
+    if isfile("settings.conf")
+        display("Default settings.conf created.")
+        display("Edit this using menu() or your favorite text editor.")
+    end
 end
 
 # // Make an mp4 movie with 5 groups color coded by initial x position
