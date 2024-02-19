@@ -307,38 +307,6 @@ function makemovie_xslice(dump,skips,dumpfile="xslice")
     end
     mp4(anim, string(dumpfile,".mp4"), fps=get(settings,"fps",20) , loop=0, verbose=false, show_msg=true)
 end 
-end #module LAMMPStools
-
-
-# // OLD STUFF DOWN HERE
-# // Input file is a "shaped" dump file, output from 
-# // dumpshaper.sh
-#function readdum_old(inputfile, Natoms)
-#    Natoms = Int(Natoms);
-#    rawdump = readdlm(inputfile);
-#    # // Starts like this: 
-#    # | 1  |  2    | 3 | 4 | 5 | 6  | 7  | 8  | 9  | 10 | 11
-#    # | ID | GROUP | x | y | z | vx | vy | vz | ux | uy | uz
-#    
-#    # // First time step
-#    newstep = rawdump[1:Natoms,:];
-#    time = zeros(length(newstep[:,1]));
-#    newdump = [sortslices(newstep, dims=1) time];
-#    stepdict = Dict(0=>newdump);
-#    
-#    # // Now like this: 
-#    # | 1  |  2    | 3 | 4 | 5 | 6  | 7  | 8  | 9  | 10 | 11 | time
-#    # | ID | GROUP | x | y | z | vx | vy | vz | ux | uy | uz | time
-#        
-#    # // Loop over the others
-#    for ts in 1:Int(length(rawdump[:,1])/Natoms - 1)
-#        newstep = rawdump[ts*Natoms+1:ts*Natoms+Natoms,:]
-#        time = ts .* ones(length(newstep[:,1]));
-#        newstep = [sortslices(newstep, dims=1) time];
-#        #newdump = [newdump; newstep] # // turn back on for giant matrix
-#        nextEntry = Dict(ts=>newstep);
-#        merge!(stepdict,nextEntry);
-#    end
-#    # writedlm("parseddump.csv",newdump,','); # // turn on to export to Matlab
-#    return stepdict #, newdump
-#end
+     
+     
+end #module
