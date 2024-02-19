@@ -3,8 +3,8 @@ using Documenter, GranularLammpsDump
 makedocs(
     sitename="GranularLammpsDump Documentation",
     pages = [
-        "index.md",
-        "handling.md",
-        "visualizing.md",
+        "Home" => "index.md",
+        "Handling Dump Files" => "handling.md",
+        "Visualizing Dump Files" => "visualizing.md"
         ]
         )
