@@ -1,5 +1,6 @@
 # Visualizing Dump Files
 
+## Initial Set Up
 ```@docs
 setdefaults()
 ```
