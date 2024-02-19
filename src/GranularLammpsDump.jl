@@ -2,8 +2,6 @@
 # // Also a couple of ways to make movies.  
 module GranularLammpsDump
 
-export getNatoms, readdump, parsestep, dump2mat, settingsloader, setdefaults, menu, makemovie_allgrains, makemovie_xslice
-
 using DelimitedFiles, Plots, StatsBase, Colors
 
 """
@@ -25,45 +23,66 @@ end
 """
     readdump("inputfile")
 
-Converts the contents of the dumpfile to a massive dictionary.
+Converts the contents of the dumpfile to dictionaries indexed by step number.
+
+# RETURNS
+    dumpstep -> Dictionary where each value is an array of atom attributes for one timestep, sorted by Atom ID.
+    boxes -> Dictionary where each value is an [xlo, xhi], [ylo, yhi], [zlo, zhi] array.
+    Natoms -> The Int number of atoms in the simulation.
+    timedict -> Dictionary where each value is the true timestep from the dump.
 
 Reads the dumpfile into a matrix, shapes the matrix, and removes text lines.  The number of atoms is extracted and used internally but not returned.  The final dictionary form has timesteps as keys, and matrices sorted by particle ID number as values.  In principle, this works for any dumpfile with at least 6 columns of output, but has been tested with 6 output columns and 9 output columns.  
     
-    > Each timestep looks something like this: 
-    > | 1  |  2    | 3 | 4 | 5 | 6  | 7  | 8  | 9  | 10 | 11 |
-    > | ID | GROUP | x | y | z | vx | vy | vz | ux | uy | uz |
+Each timestep looks something like this: 
+    | 1  |  2    | 3 | 4 | 5 | 6  | 7  | 8  | 9  | 10 | 11 |
+    | ID | GROUP | x | y | z | vx | vy | vz | ux | uy | uz |
 """
 function readdump(inputfile)
-    rawdump = readdlm(inputfile);
-    Natoms = Int(rawdump[4,1]);
-    ind = findall(a->!isempty(a), rawdump[:,8]);
-    rawdump = rawdump[ind,1:end-2];
-    ind = findall(a->a!="ITEM:",rawdump[:,1]);
-    rawdump = rawdump[ind,:];
-    
-    # // Now like this: 
-    # | 1  |  2    | 3 | 4 | 5 | 6  | 7  | 8  | 9  | 10 | 11
-    # | ID | GROUP | x | y | z | vx | vy | vz | ux | uy | uz
-    
-    # // First time step
-    newstep = rawdump[1:Natoms,:];
-    time = zeros(length(newstep[:,1]));
-    newdump = [sortslices(newstep, dims=1) time];
-    stepdict = Dict(0=>newdump);
-    
-    # // Now like this: 
-    # | 1  |  2    | 3 | 4 | 5 | 6  | 7  | 8  | 9  | 10 | 11 | time
-    # | ID | GROUP | x | y | z | vx | vy | vz | ux | uy | uz | time
+    file = open(inputfile);
+    count = 0;
+    dumpdict = Dict();
+    boxdict = Dict();
+    timedict = Dict();
+    Natoms = 0;
+    labels = [];
+    while eof(file) == false
+        while readline(file) != "ITEM: TIMESTEP"
+            readline(file)
+        end
+        merge!(timedict, Dict(count => parse(Int,readline(file))))
         
-    # // Loop over the others
-    for ts in 1:Int(length(rawdump[:,1])/Natoms - 1)
-        newstep = rawdump[ts*Natoms+1:ts*Natoms+Natoms,:]
-        time = ts .* ones(length(newstep[:,1]));
-        newstep = [sortslices(newstep, dims=1) time];
-        nextEntry = Dict(ts=>newstep);
-        merge!(stepdict,nextEntry);
+        while readline(file) != "ITEM: NUMBER OF ATOMS"
+            readline(file)
+        end
+        Natoms = parse(Int,readline(file))
+        
+        while contains(readline(file),"ITEM: BOX BOUNDS") == false
+            readline(file)
+        end
+        x = split(readline(file))
+        x = [parse(Float64,x[1]) parse(Float64,x[2])]
+        y = split(readline(file))
+        y = [parse(Float64,y[1]) parse(Float64,y[2])]
+        z = split(readline(file))
+        z = [parse(Float64,z[1]) parse(Float64,z[2])]
+        
+        readuntil(file, "ITEM: ATOMS ")
+        labels = split(readline(file))
+        dumpstep = zeros(Natoms,length(labels))
+        for atom in 1:Natoms
+            line = split(readline(file))
+            for param in 1:length(labels)
+                dumpstep[atom,param] = parse(Float64,line[param])
+            end
+        end
+        dumpstep = sortslices(dumpstep,dims=1)
+        merge!(dumpdict,Dict(count => dumpstep))
+        box = [x;y;z];
+        merge!(boxdict,Dict(count => box))
+        count = count+1
     end
-    return stepdict
+    close(file)
+    return dumpdict, boxdict, Natoms, timedict
 end
 
 """
@@ -120,7 +139,7 @@ Export to .csv is on by default.  This will help you collaborate with Matlab use
 function dump2mat(stepdict, exportflag=1)
     mat = Matrix{Float64};
     for it in 0:length(stepdict) - 1
-       newstep = get(d,it,3);
+       newstep = get(stepdict,it,3);
        mat = [mat; newstep];
     end
     mat = mat[2:end,:];
@@ -175,22 +194,30 @@ Edit this using menu() or your favorite text editor.
 ```
 """
 function setdefaults()
-    defaults = ["grainsize" 25;
+    defaults = ["a" "a";
+                "PLOT" "SETTINGS";
+                "grainsize" 25;
                 "bordersize" 2;
                 "opacity" 0.5;
-                "radialview" 10;
-                "azimuthalview" 5;
                 "labelsfontsize" 24;
                 "color1" "blue";
                 "color2" "green";
                 "color3" "yellow";
                 "color4" "orange";
                 "color5" "red";
+                "b" "b";
+                "MOVIE" "SETTNGS";
                 "fps" 20;
+                "radialview" 10;
+                "azimuthalview" 5;
+                "widthpx" 1200;
+                "heightpx" 1200;
+                "c" "c";
+                "CUSTOM" "SETTINGS";
                 "Tlower" 0.3;
                 "Tlow" 0.75;
                 "Thigh" 1.25;
-                "Thigher" 3]
+                "Thigher" 3];
     file = open("settings.conf", "w");
     writedlm(file, defaults, ' '); # // delimiter is a space
     close(file);
@@ -215,9 +242,22 @@ function makemovie_allgrains(dump,skips,dumpfile="allgrains")
         display("Run setdefaults() and try again!")
         display("+_+_+_+_+_+_+_+_+_+_+_+_+_+_+")
     end
-    settings = settingsloader();
-    gr(size=(1200,1200)); # // define the output size
+     settings = settingsloader();
+    gr(size=(get(settings, "widthpx", 1200), get(settings, "heightpx", 1200))); # // define the output size
     default(legend = false) # // turn off legend in the movie
+    
+    # make box
+    mat = dump2mat(boxes, 0);
+    x = mat[1:3:end,:];
+    xmin = floor(minimum(x[:,1]));
+    xmax = ceil(maximum(x[:,2]));
+    y = mat[2:3:end,:];
+    ymin = floor(minimum(y[:,1]));
+    ymax = ceil(maximum(y[:,2]));
+    z = mat[3:3:end,:];
+    zmin = floor(minimum(z[:,1]));
+    zmax = ceil(maximum(z[:,2]));
+    
     init = get(dump,0,3);
     c1 = findall(a->a>=-5 && a < -3,init[:,3]);
     c2 = findall(a->a>=-3 && a < -1,init[:,3]);
@@ -237,13 +277,13 @@ function makemovie_allgrains(dump,skips,dumpfile="allgrains")
         # // add something here about sorting into a color by x position
         scatter(
             steps[c1,3],steps[c1,4],steps[c1,5], 
-            xlims = (-5,5),
+            xlims = (xmin,xmax),
             xlabel = "x",
-            ylims = (-5,5),
+            ylims = (ymin,ymax),
             ylabel = "y",
             zlabel = "z",
             guidefont=font(get(settings,"labelsfontsize", 24)),
-            zlims = (0,14),
+            zlims = (zmin, zmax),
             camera = camera_angle, # // measured in degrees
             aspect_ratio = :equal,
             msize = grainsize, 
@@ -305,8 +345,21 @@ function makemovie_xslice(dump,skips,dumpfile="xslice")
         display("+_+_+_+_+_+_+_+_+_+_+_+_+_+_+")
     end
     settings = settingsloader();
-    gr(size=(1200,1200)); # // define the output size
+    gr(size=(get(settings, "widthpx", 1200), get(settings, "heightpx", 1200))); # // define the output size
     default(legend = false) # // turn off legend in the movie
+    
+    # make box
+    mat = dump2mat(boxes, 0);
+    x = mat[1:3:end,:];
+    xmin = floor(minimum(x[:,1]));
+    xmax = ceil(maximum(x[:,2]));
+    y = mat[2:3:end,:];
+    ymin = floor(minimum(y[:,1]));
+    ymax = ceil(maximum(y[:,2]));
+    z = mat[3:3:end,:];
+    zmin = floor(minimum(z[:,1]));
+    zmax = ceil(maximum(z[:,2]));
+   
     init = get(dump,0,3);
     sample = findall(a->a>=-5 && a < -3,init[:,3]);
     
@@ -332,13 +385,13 @@ function makemovie_xslice(dump,skips,dumpfile="xslice")
         # // add something here about sorting into a color by x position
         scatter(
             steps[c1,3],steps[c1,4],steps[c1,5], 
-            xlims = (-5,5),
+            xlims = (xmin,xmax),
             xlabel = "x",
-            ylims = (-5,5),
+            ylims = (ymin,ymax),
             ylabel = "y",
             zlabel = "z",
             guidefont=font(get(settings,"labelsfontsize", 24)),
-            zlims = (0,14),
+            zlims = (zmin, zmax),
             camera = camera_angle, # // measured in degrees
             aspect_ratio = :equal,
             msize = grainsize, 
