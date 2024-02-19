@@ -13,7 +13,7 @@ function getNatoms(inputfile)
         Natoms = readline(file)
     end
     close(file);
-    Natoms = Int(Natoms);
+    Natoms = parse(Int,Natoms);
     return Natoms
 end
 
