@@ -2,11 +2,17 @@
 For granular mechanics: tools for parsing LAMMPS dumps (dump files), exporting the parsed dumps, and visualizing.  
 
 ### Reading and Parsing Dumps
+1. Read an entire dump file into a dictionary with readdump(inputfile).  
+2. Parse one step at a time into a mutable struct with parsestep -- iterate to analyze multiple steps.  
+3. Export an entire reshaped dump as a CSV file to be read into MATLAB(c).  
+
 > Natoms = getNatoms(inputfile)
 
 > dump = readdump(inputfile)
 
-> step = parsedump(dump, stepnumber, warningflag)
+> step = parsestep(dump, stepnumber, warningflag)
+
+> matrix = dump2mat(dump)
 
 ### Visualizing
 1. Open Julia in, or cd() into, the project folder.  
