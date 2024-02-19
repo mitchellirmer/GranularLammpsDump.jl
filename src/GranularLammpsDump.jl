@@ -111,13 +111,13 @@ function parsestep(d,ts)
 end
 
 """
-    dump2mat(dict,exportflag)
+    dump2mat(dict,exportflag=1)
 
 Converts the readdump dictionary to one giant matrix.  Optionally export as .csv file.
 
-Export to .csv is on by default.  This will help you collaborate with Matlab users.
+Export to .csv is on by default.  This will help you collaborate with Matlab users ;)  Set exportflag to 0 to turn off.  
 """
-function dump2mat(stepdict, exportflag=1)
+function dump2mat(stepdict[, exportflag=1])
     mat = Matrix{Float64};
     for it in 0:length(stepdict) - 1
        newstep = get(d,it,3);
@@ -200,7 +200,15 @@ function setdefaults()
     end
 end
 
-# // Make an mp4 movie with 5 groups color coded by initial x position
+"""
+    makemovie_allgrains(dump, skips[, dumpfile="allgrains"])
+
+Makes an mp4 movie with 5 groups color coded by initial x position.  
+
+The "skips" variable takes every Nth timestep from the dump dictionary. E.g., use 1 for every timestep or 10 to take every 10th step.
+
+Output is an .mp4 video in the project directory.  The optional dumpfile argument allows matching the output.mp4 to the input file name.
+"""
 function makemovie_allgrains(dump,skips,dumpfile="allgrains")
     if !isfile("settings.conf")
         display("+_+_+_+_+_+_+_+_+_+_+_+_+_+_+")
@@ -281,7 +289,15 @@ function makemovie_allgrains(dump,skips,dumpfile="allgrains")
     return movie
 end
 
-# // Make an mp4 movie with 5 groups color coded by current vy 
+"""
+    makemovie_xslice(dump, skips[, dumpfile="allgrains"])
+
+Makes an mp4 movie from one x slice, top to bottom, and color codes the particles based on "granular temperature" in the current step. 
+
+The "skips" variable takes every Nth timestep from the dump dictionary. E.g., use 1 for every timestep or 10 to take every 10th step.
+
+Output is an .mp4 video in the project directory.  The optional dumpfile argument allows matching the output.mp4 to the input file name.
+"""
 function makemovie_xslice(dump,skips,dumpfile="xslice")
      if !isfile("settings.conf")
         display("+_+_+_+_+_+_+_+_+_+_+_+_+_+_+")
