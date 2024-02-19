@@ -1,42 +1,8 @@
 # GranularLammpsDump Documentation
 
+Tools for parsing LAMMPS dumps (dump files), exporting the parsed dumps, and visualizing the simulation as a .mp4 movie. Developed during research for a master's thesis in sheared, vibrated granular flows at the Naval Postgraduate School, Monterey CA. 
+
 ```@contents
 ```
 
-## Shape/Parse/Export Dump Files
 
-```@docs
-getNatoms("inputfile")
-```
-
-```@docs
-readdump("inputfile")
-```
-```@docs
-parsestep(dump,ts)
-```
-```@docs
-dump2mat(dump,exportflag=1)
-```
-
-## Visualize
-
-```@docs
-setdefaults()
-```
-```@docs
-menu()
-```
-```@docs
-settingsloader()
-```
-```@docs
-makemovie_allgrains(dump,skips,dumpfile="allgrains")
-```
-```@docs
-makemovie_xslice(dump,skips,dumpfile="xslice")
-```
-
-## Index
- ```@index
- ```
