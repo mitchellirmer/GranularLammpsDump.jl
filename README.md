@@ -23,9 +23,8 @@ For sheared granular flows: tools for parsing LAMMPS dumps (dump files), exporti
 5. Run one of the makemovie functions to make a movie.  The "skips" variable takes every Nth timestep from the dump dictionary. E.g., use 1 for every timestep or 10 to take every 10th step.  The "allgrains" variant visualizes all grains with colorcoding by initial x position.  The "xslice" version takes one x slice, top to bottom, and color codes the particles based on "granular temperature" in the current step.
 > makemovie_allgrains(dump, skips, moviename)
 > 
-> ![exampleviz2](https://github.com/mitchellirmer/GranularLammpsDump.jl/assets/81964320/d62c8e85-2223-4e0c-b22f-2dcebf31a06d)
+> ![exampleviz1](https://github.com/mitchellirmer/GranularLammpsDump.jl/assets/81964320/7751af12-21f7-44c0-bd7c-c13d41d82ef3)
 >
 > makemovie_xslice(dump, skips, moviename)
 > 
-> ![exampleviz1](https://github.com/mitchellirmer/GranularLammpsDump.jl/assets/81964320/7751af12-21f7-44c0-bd7c-c13d41d82ef3)
-
+> ![exampleviz2](https://github.com/mitchellirmer/GranularLammpsDump.jl/assets/81964320/d62c8e85-2223-4e0c-b22f-2dcebf31a06d)
