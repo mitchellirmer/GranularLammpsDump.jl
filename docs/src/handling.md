@@ -1,4 +1,4 @@
-## Handling Dump Files
+# Handling Dump Files
 
 ```@docs
 getNatoms("inputfile")
