@@ -3,7 +3,7 @@
 ```@contents
 ```
 
-## Functions
+## Shape/Parse/Export Dump Files
 
 ```@docs
 getNatoms("inputfile")
@@ -18,6 +18,8 @@ parsestep(dump,ts)
 ```@docs
 dump2mat(dump,exportflag=1)
 ```
+
+## Visualize
 
 ```@docs
 setdefaults()
