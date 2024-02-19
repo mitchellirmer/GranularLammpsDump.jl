@@ -8,3 +8,7 @@ makedocs(
         "Visualizing Dump Files" => "visualizing.md"
         ]
         )
+
+#deploydocs(
+#    repo = "github.com/mitchellirmer/GranularLammpsDump.jl.git",
+#)
