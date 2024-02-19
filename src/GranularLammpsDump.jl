@@ -6,7 +6,12 @@ export getNatoms, readdump, parsestep, dump2mat, settingsloader, setdefaults, me
 
 using DelimitedFiles, Plots, StatsBase, Colors
 
-# // Get the Natoms in the simulation
+"""
+    getNatoms("inputfile")
+Parses the total number of atoms into an integer.
+
+Looks at the 4th line of the dump file and parses the number of atoms from the readline string into an integer.
+"""
 function getNatoms(inputfile)
     file = open(inputfile);
     for it in 1:4
@@ -17,7 +22,13 @@ function getNatoms(inputfile)
     return Natoms
 end
 
-# // Convert the dumpfile to a massive dictionary
+"""
+    readdump("inputfile")
+
+Converts the contents of the dumpfile to a massive dictionary.
+
+Reads the dumpfile into a matrix, shapes the matrix, and removes text lines.  The number of atoms is extracted and used internally but not returned.  The final dictionary form has timesteps as keys, and matrices sorted by particle ID number as values.  In principle, this works for any dumpfile with at least 6 columns of output, but has been tested with 6 output columns and 9 output columns.   
+"""
 function readdump(inputfile)
     rawdump = readdlm(inputfile);
     Natoms = Int(rawdump[4,1]);
