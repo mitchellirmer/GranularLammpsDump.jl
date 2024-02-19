@@ -117,7 +117,7 @@ Converts the readdump dictionary to one giant matrix.  Optionally export as .csv
 
 Export to .csv is on by default.  This will help you collaborate with Matlab users ;)  Set exportflag to 0 to turn off.  
 """
-function dump2mat(stepdict[, exportflag=1])
+function dump2mat(stepdict, exportflag=1)
     mat = Matrix{Float64};
     for it in 0:length(stepdict) - 1
        newstep = get(d,it,3);
@@ -201,7 +201,7 @@ function setdefaults()
 end
 
 """
-    makemovie_allgrains(dump, skips[, dumpfile="allgrains"])
+    makemovie_allgrains(dump, skips, dumpfile="allgrains")
 
 Makes an mp4 movie with 5 groups color coded by initial x position.  
 
@@ -290,7 +290,7 @@ function makemovie_allgrains(dump,skips,dumpfile="allgrains")
 end
 
 """
-    makemovie_xslice(dump, skips[, dumpfile="allgrains"])
+    makemovie_xslice(dump, skips, dumpfile="allgrains")
 
 Makes an mp4 movie from one x slice, top to bottom, and color codes the particles based on "granular temperature" in the current step. 
 
