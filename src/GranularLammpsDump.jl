@@ -6,6 +6,7 @@ export getNatoms, readdump, parsestep, dump2mat, settingsloader, setdefaults, me
 
 using DelimitedFiles, Plots, StatsBase, Colors
 
+
 """
     getNatoms("inputfile")
 Parses the total number of atoms into an integer.
