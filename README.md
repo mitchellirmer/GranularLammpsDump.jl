@@ -6,7 +6,7 @@ For granular mechanics: tools for parsing LAMMPS dumps (dump files), exporting t
 > dump = readdump(inputfile)
 2. Parse one step at a time into a mutable struct with parsestep -- iterate to analyze multiple steps.  
 > step = parsestep(dump, stepnumber)
-3. Export an entire reshaped dump as Julia matrix and optionally as a CSV file to be read into MATLAB(c).  
+3. Export an entire reshaped dump as Julia matrix and optionally as a CSV file to be read into MATLAB (c).  
 > matrix = dump2mat(dump,exportflag)  # // 0 for no CSV, 1 to export a CSV
 
 ### Visualizing
