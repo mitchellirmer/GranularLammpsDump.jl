@@ -1,5 +1,7 @@
 # GranularLammpsDump.jl
-For sheared granular flows: tools for parsing LAMMPS dumps (dump files), exporting the parsed dumps, and visualizing.  
+Visit GitHub pages documentation [here](https://mitchellirmer.github.io/GranularLammpsDump.jl/).
+
+Tools for parsing LAMMPS dumps (dump files), exporting the parsed dumps, and visualizing the simulation as a .mp4 movie. Developed as part of a master's thesis in sheared, vibrated granular flows at the Naval Postgraduate School, Monterey CA.   
 
 ### Reading and Parsing Dumps
 1. Read an entire dump file into a dictionary with readdump(inputfile).  In principle, this works with any dump file with at least 6 outputs.  
