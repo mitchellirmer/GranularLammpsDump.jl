@@ -306,6 +306,7 @@ function makemovie_xslice(dump,skips,dumpfile="xslice")
             )
     end
     mp4(anim, string(dumpfile,".mp4"), fps=get(settings,"fps",20) , loop=0, verbose=false, show_msg=true)
+end 
 end #module LAMMPStools
 
 
