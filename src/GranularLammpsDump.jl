@@ -239,7 +239,7 @@ The "skips" variable takes every Nth timestep from the dump dictionary. E.g., us
 
 Output is an .mp4 video in the project directory.  The optional dumpfile argument allows matching the output.mp4 to the input file name.
 """
-function makemovie_allgrains(dump,skips,dumpfile="allgrains")
+function makemovie_allgrains(dump,boxes,skips,dumpfile="allgrains")
     if !isfile("settings.conf")
         display("+_+_+_+_+_+_+_+_+_+_+_+_+_+_+")
         display("Run setdefaults() and try again!")
@@ -333,7 +333,7 @@ function makemovie_allgrains(dump,skips,dumpfile="allgrains")
 end
 
 """
-    makemovie_xslice(dump, skips, dumpfile="allgrains")
+    makemovie_xslice(dump, skips, dumpfile="xslice")
 
 Makes an mp4 movie from one x slice, top to bottom, and color codes the particles based on "granular temperature" in the current step. 
 
@@ -341,7 +341,7 @@ The "skips" variable takes every Nth timestep from the dump dictionary. E.g., us
 
 Output is an .mp4 video in the project directory.  The optional dumpfile argument allows matching the output.mp4 to the input file name.
 """
-function makemovie_xslice(dump,skips,dumpfile="xslice")
+function makemovie_xslice(dump,boxes,skips,dumpfile="xslice")
      if !isfile("settings.conf")
         display("+_+_+_+_+_+_+_+_+_+_+_+_+_+_+")
         display("Run setdefaults() and try again!")

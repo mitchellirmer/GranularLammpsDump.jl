@@ -16,12 +16,17 @@ Update with
 
 ### Reading and Parsing Dumps
 1. Read an entire dump file into a dictionary with readdump(inputfile).  In principle, this works with any "atom" or "custom" mode LAMMPS dump, but is tested to work for this case in particular:
->|---------------------------------|  
->|ITEM: TIMESTEP                   |  
->|ITEM: NUMBER OF ATOMS            |  
->|ITEM: BOX BOUNDS pp pp ss        |  
->|ITEM: ATOMS id type x y z vx ... |  
->|---------------------------------|  
+>|----------------------------------|  
+>
+>| ITEM: TIMESTEP                   |  
+>
+>| ITEM: NUMBER OF ATOMS            |  
+>
+>| ITEM: BOX BOUNDS pp pp ss        |  
+>
+>| ITEM: ATOMS id type x y z vx ... |  
+>
+>|----------------------------------|  
 >
 > dump, boxes, Natoms, times = readdump("inputfile")
 
