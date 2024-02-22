@@ -4,8 +4,7 @@ module GranularLammpsDump
 
 export getNatoms, readdump, parsestep, dump2mat, settingsloader, setdefaults, menu, makemovie_allgrains, makemovie_xslice, makemovie
 
-using DelimitedFiles, Plots, StatsBase, ColorSchemes
-pyplot()
+using DelimitedFiles, Plots, StatsBase, Colors, ColorSchemes
 
 """
     getNatoms("inputfile")
