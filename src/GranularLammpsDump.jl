@@ -5,6 +5,7 @@ module GranularLammpsDump
 export getNatoms, readdump, parsestep, dump2mat, settingsloader, setdefaults, menu, makemovie_allgrains, makemovie_xslice, makemovie
 
 using DelimitedFiles, Plots, StatsBase, ColorSchemes
+pyplot()
 
 """
     getNatoms("inputfile")
@@ -245,7 +246,7 @@ function makemovie_allgrains(dump,boxes,skips,dumpfile="allgrains")
         display("+_+_+_+_+_+_+_+_+_+_+_+_+_+_+")
     end
      settings = settingsloader();
-    gr(size=(get(settings, "widthpx", 1200), get(settings, "heightpx", 1200))); # // define the output size
+    pyplot(size=(get(settings, "widthpx", 1200), get(settings, "heightpx", 1200))); # // define the output size
     default(legend = false) # // turn off legend in the movie
     
     # make box
@@ -347,7 +348,7 @@ function makemovie_xslice(dump,boxes,skips,dumpfile="xslice")
         display("+_+_+_+_+_+_+_+_+_+_+_+_+_+_+")
     end
     settings = settingsloader();
-    gr(size=(get(settings, "widthpx", 1200), get(settings, "heightpx", 1200))); # // define the output size
+    pyplot(size=(get(settings, "widthpx", 1200), get(settings, "heightpx", 1200))); # // define the output size
     default(legend = false) # // turn off legend in the movie
     
     # make box
