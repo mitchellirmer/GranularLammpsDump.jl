@@ -1,3 +1,6 @@
+using Plots, StatsBase, ColorSchemes
+pytplot()
+
 """
     makemovie(dump,box,Tref,skips,moviename="granularmovie")
     
