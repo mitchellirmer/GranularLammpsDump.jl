@@ -2,10 +2,10 @@
 # // Also a couple of ways to make movies.  
 module GranularLammpsDump
 
-export getNatoms, readdump, parsestep, dump2mat, settingsloader, setdefaults, menu, makemovie_allgrains, makemovie_xslice
+export getNatoms, readdump, parsestep, dump2mat, settingsloader, setdefaults, menu, makemovie_allgrains, makemovie_xslice, makemovie
 
-using DelimitedFiles, Plots, StatsBase, Colors
-
+using DelimitedFiles, Plots, StatsBase, ColorSchemes
+include("makemovie.jl")
 
 """
     getNatoms("inputfile")
