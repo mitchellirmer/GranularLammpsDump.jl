@@ -5,7 +5,6 @@ Makes an .mp4 movie with all grains shown depicting temperature.
 
 Grains outside the slice of interest are shown as transparent with black borders.
 """
-
 function makemovie(dump, boxes, Tref, skips, dumpfile="temp")
 
     if !isfile("settings.conf")
