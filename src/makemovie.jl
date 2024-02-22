@@ -1,5 +1,5 @@
 using Plots, StatsBase, ColorSchemes
-pytplot()
+pyplot()
 
 """
     makemovie(dump,box,Tref,skips,moviename="granularmovie")
