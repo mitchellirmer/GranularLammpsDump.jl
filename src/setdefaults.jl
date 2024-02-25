@@ -16,15 +16,19 @@ Edit this using menu() or your favorite text editor.
 function setdefaults()
     defaults = ["a" "a";
                 "PLOT" "SETTINGS";
-                "grainsize" 25;
-                "bordersize" 2;
-                "opacity" 0.5;
+                "--Global" "Options";
+                "grainsize" 33;
                 "labelsfontsize" 24;
-                "color1" "blue";
-                "color2" "green";
-                "color3" "yellow";
-                "color4" "orange";
-                "color5" "red";
+                "colorscheme" "viridis";
+                "--Interest" "Group";
+                "bordersize_i" 0.75;
+                "opacity_i" 0.875;
+                "borderopacity_i" 0.95;
+                "--Fill" "Group";
+                "graincolor_f" "white";
+                "bordersize_f" 0.75;
+                "borderopacity_f" 0.75;
+                "opacity_f" 0.40;
                 "b" "b";
                 "MOVIE" "SETTNGS";
                 "fps" 20;
@@ -33,11 +37,9 @@ function setdefaults()
                 "widthpx" 1200;
                 "heightpx" 1200;
                 "c" "c";
-                "CUSTOM" "SETTINGS";
-                "Tlower" 0.3;
-                "Tlow" 0.75;
-                "Thigh" 1.25;
-                "Thigher" 3];
+                "DATA" "SETTINGS";
+                "Tref" "0:1/4:6";
+                "stepfraction" 0.125];
     file = open("settings.conf", "w");
     writedlm(file, defaults, ' '); # // delimiter is a space
     close(file);

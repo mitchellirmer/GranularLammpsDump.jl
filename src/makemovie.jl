@@ -57,10 +57,9 @@ function makemovie(dump, boxes, Tref, skips, dumpfile="temp")
         edges[i] = 10^-val
     end
     edges = reverse(edges);
-    
-    
+    includedsteps = floor((length(dump) - 1)*get(settings,"stepfraction",0.125));
     # // make the plots that form the movie
-    anim = @animate for ts in 0:skips:length(dump) - 1
+    anim = @animate for ts in 0:skips:includedsteps
         steps = get(dump,ts,3);
         leftovers = steps[antisample,:];
         steps = steps[samplegroup,:];
