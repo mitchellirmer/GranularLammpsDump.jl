@@ -1,5 +1,4 @@
-using Plots, StatsBase, ColorSchemes
-pyplot()
+export makemovie
 
 """
     makemovie(dump,box,Tref,skips,moviename="granularmovie")
