@@ -10,12 +10,12 @@ menu()
 ```@docs
 settingsloader()
 ```
-## All Grains
+## Color coded by initial x position
 ```@docs
-makemovie_allgrains(dump,skips,dumpfile="allgrains")
+makemovie_allgrains(dump,boxes,skips,moviename="granularmovie")
 ```
 
-## Slices of Grains
+## Color coded by granular temperature
 ```@docs
-makemovie_xslice(dump,skips,dumpfile="xslice")
+makemovie(dump,boxes,Tref,skips,moviename="granularmovie")
 ```

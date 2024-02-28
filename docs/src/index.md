@@ -21,7 +21,7 @@ Update with
 >| ITEM: TIMESTEP                   |  
 >
 >| ITEM: NUMBER OF ATOMS            |  
->
+> 
 >| ITEM: BOX BOUNDS pp pp ss        |  
 >
 >| ITEM: ATOMS id type x y z vx ... |  
@@ -29,6 +29,8 @@ Update with
 >|----------------------------------|  
 >
 > dump, boxes, Natoms, times = readdump("inputfile")
+
+Optionally, use readdump2(inputfile) for other dump file setups.  This version is slower by at least a factor of 2 (and the atoms are not indexed by ID in the output), but this /should/ work for any dump.  The output is a dictionary of section titles as keys and dictionaries of each section as values.
 
 2. Parse one step at a time into a mutable struct with parsestep -- iterate to analyze multiple steps.  By default, it is set up for x, y, z positions, and vx, vy, vz velocities.  The mutable struct could be modified for any custom outputs.   
 > step = parsestep(dump, stepnumber)
@@ -47,10 +49,10 @@ Update with
 4. Use readdump(inputfile) to load a dump file.  
 > dump, boxes, Natoms, times = readdump("inputfile")
 
-5. Run one of the makemovie functions to make a movie.  The "skips" variable takes every Nth timestep from the dump dictionary. E.g., use 1 for every timestep or 10 to take every 10th step.  The "allgrains" variant visualizes all grains with colorcoding by initial x position.  The "xslice" version takes one x slice, top to bottom, and color codes the particles based on "granular temperature" in the current step.
-> makemovie_allgrains(dump, skips, moviename)
+5. Run one of the makemovie functions to make a movie.  The "skips" variable takes every Nth timestep from the dump dictionary. E.g., use 1 for every timestep or 10 to take every 10th step.  makemovi() takes one x slice, top to bottom, and color codes the particles based on "granular temperature" in the current step.  The "allgrains" variant visualizes all grains with colorcoding by initial x position.  
+> makemovie(dump, boxes, Tref, skips, moviename)
 >
-> makemovie_xslice(dump, skips, moviename)
+> makemovie_allgrains(dump, boxes, skips, moviename)
 
 ```@contents
 Pages = ["index.md", "handling.md", "visualizing.md"]

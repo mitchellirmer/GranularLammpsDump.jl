@@ -5,7 +5,13 @@
 getNatoms("inputfile")
 ```
 ```@docs
+getdumpsections("inputfile")
+```
+```@docs
 readdump("inputfile")
+```
+```@docs
+readdump2("inputfile")
 ```
 ## Using the Dump
 ```@docs

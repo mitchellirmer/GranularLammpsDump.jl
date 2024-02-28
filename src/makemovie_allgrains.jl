@@ -1,6 +1,11 @@
 export makemovie_allgrains
 
-function makemovie_allgrains(dump,boxes,skips,dumpfile="allgrains")
+"""
+    makemovie_allgrains(dump,boxes,skips,moviename="granularmovie")
+    
+Makes an .mp4 movie with all grains shown, color coded by initial x position.
+"""
+function makemovie_allgrains(dump,boxes,skips,moviefile="granularmovie")
     if !isfile("settings.conf")
         display("+_+_+_+_+_+_+_+_+_+_+_+_+_+_+")
         display("Run setdefaults() and try again!")

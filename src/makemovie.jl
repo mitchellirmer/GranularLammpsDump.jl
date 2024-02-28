@@ -1,13 +1,16 @@
 export makemovie
 
 """
-    makemovie(dump,box,Tref,skips,moviename="granularmovie")
+    makemovie(dump,boxes,Tref,skips,moviename="granularmovie")
     
 Makes an .mp4 movie with all grains shown depicting temperature.
 
 Grains outside the slice of interest are shown as transparent with black borders.
+
+# ARGUMENTS
+> Tref is a string, like "0:1/4:6" that sets the powers in 10^Tref
 """
-function makemovie(dump, boxes, Tref, skips, dumpfile="temp")
+function makemovie(dump, boxes, Tref, skips, moviename="granularmovie")
 
     if !isfile("settings.conf")
         display("+_+_+_+_+_+_+_+_+_+_+_+_+_+_+")

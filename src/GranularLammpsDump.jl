@@ -3,6 +3,8 @@ module GranularLammpsDump
 using DelimitedFiles, Plots, StatsBase, Colors, ColorSchemes
 
 include("readdump.jl")
+include("getdumpsections.jl")
+include("readdump2.jl")
 include("parsestep.jl")
 include("dump2mat.jl")
 include("getNatoms.jl")
