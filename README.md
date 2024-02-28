@@ -10,11 +10,14 @@ Tools for parsing LAMMPS dumps (dump files output with "atom" or "custom" argume
 ### Installation
 This library isn't in the official registry (yet?).  Add with:
 > julia> ]  
+>
 > pkg> add https://github.com/mitchellirmer/GranularLammpsDump.jl.git  
+>
 > julia> using GranularLammpsDump  
 
 Update with 
 > julia> ]  
+>
 > pkg> update
 
 ### Reading and Parsing Dumps

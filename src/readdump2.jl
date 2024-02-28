@@ -1,5 +1,3 @@
-include("getdumpsections.jl")
-
 export readdump2
 
 """
