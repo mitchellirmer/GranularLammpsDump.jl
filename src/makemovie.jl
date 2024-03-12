@@ -18,7 +18,7 @@ function makemovie(dump, boxes, Tref, skips, moviename="granularmovie")
         display("+_+_+_+_+_+_+_+_+_+_+_+_+_+_+")
     end
     settings = settingsloader();
-    pyplot(size=(height=get(settings,"heightpx",1200), width=get(settings,"widthpx",1200)));
+    pyplot(size=(get(settings,"heightpx",1200), get(settings,"widthpx",1200)));
     default(legend = false) # // turn off legend in the movie
     
     # make box
