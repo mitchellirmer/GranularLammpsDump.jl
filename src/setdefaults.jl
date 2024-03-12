@@ -20,6 +20,7 @@ function setdefaults()
                 "grainsize" 33;
                 "labelsfontsize" 24;
                 "colorscheme" "viridis";
+                "boundarytype" "mean";
                 "--Interest" "Group";
                 "bordersize_i" 0.75;
                 "opacity_i" 0.875;

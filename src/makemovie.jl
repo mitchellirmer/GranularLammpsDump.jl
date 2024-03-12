@@ -18,20 +18,34 @@ function makemovie(dump, boxes, Tref, skips, moviename="granularmovie")
         display("+_+_+_+_+_+_+_+_+_+_+_+_+_+_+")
     end
     settings = settingsloader();
-    pyplot(size=(height=1200, width=1200));
+    pyplot(size=(height=get(settings,"heightpx",1200), width=get(settings,"widthpx",1200)));
     default(legend = false) # // turn off legend in the movie
     
     # make box
-    mat = dump2mat(boxes, 0);
-    x = mat[1:3:end,:];
-    xmin = floor(minimum(x[:,1]));
-    xmax = ceil(maximum(x[:,2]));
-    y = mat[2:3:end,:];
-    ymin = floor(minimum(y[:,1]));
-    ymax = ceil(maximum(y[:,2]));
-    z = mat[3:3:end,:];
-    zmin = floor(minimum(z[:,1]));
-    zmax = ceil(maximum(z[:,2]));
+    boundarytype = get(settings, "boundarytype", "mean");
+    if boundarytype = "extreme"
+        mat = dump2mat(boxes, 0);
+        x = mat[1:3:end,:];
+        xmin = floor(minimum(x[:,1]));
+        xmax = ceil(maximum(x[:,2]));
+        y = mat[2:3:end,:];
+        ymin = floor(minimum(y[:,1]));
+        ymax = ceil(maximum(y[:,2]));
+        z = mat[3:3:end,:];
+        zmin = floor(minimum(z[:,1]));
+        zmax = ceil(maximum(z[:,2]));
+    elseif boundarytype = "mean"
+        mat = dump2mat(boxes, 0);
+        x = mat[1:3:end,:];
+        xmin = floor(mean(x[:,1]));
+        xmax = ceil(mean(x[:,2]));
+        y = mat[2:3:end,:];
+        ymin = floor(mean(y[:,1]));
+        ymax = ceil(mean(y[:,2]));
+        z = mat[3:3:end,:];
+        zmin = floor(mean(z[:,1]));
+        zmax = ceil(mean(z[:,2]));
+    end 
    
     init = get(dump,0,3);
     samplegroup = findall(a->a>=-5 && a < -3,init[:,3]);
