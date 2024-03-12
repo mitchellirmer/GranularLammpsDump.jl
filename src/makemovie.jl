@@ -23,7 +23,7 @@ function makemovie(dump, boxes, Tref, skips, moviename="granularmovie")
     
     # make box
     boundarytype = get(settings, "boundarytype", "mean");
-    if boundarytype == "extreme"
+    if contains(boundarytype,"extreme") == true
         mat = dump2mat(boxes, 0);
         x = mat[1:3:end,:];
         xmin = floor(minimum(x[:,1]));
@@ -34,7 +34,7 @@ function makemovie(dump, boxes, Tref, skips, moviename="granularmovie")
         z = mat[3:3:end,:];
         zmin = floor(minimum(z[:,1]));
         zmax = ceil(maximum(z[:,2]));
-    elseif boundarytype == "mean"
+    else
         mat = dump2mat(boxes, 0);
         x = mat[1:3:end,:];
         xmin = floor(mean(x[:,1]));
