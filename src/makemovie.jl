@@ -125,5 +125,5 @@ function makemovie(dump, boxes, Tref, skips, moviename="granularmovie")
                 )
          end
     end
-    mp4(anim, string(dumpfile,".mp4"), fps=get(settings,"fps",20) , loop=0, verbose=false, show_msg=true)
+    mp4(anim, string(moviename,".mp4"), fps=get(settings,"fps",20) , loop=0, verbose=false, show_msg=true)
 end 
